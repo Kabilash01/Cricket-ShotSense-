@@ -1,25 +1,25 @@
 ---
-name: Next step — Detectron2 pose-based contact triggering on Ubuntu
-description: Agreed architectural direction for replacing the broken ball+bat contact trigger
+name: Pose trigger — completed with YOLOv8-pose; Detectron2 deferred
+description: Pose-based wrist-velocity contact trigger is done using YOLOv8-pose. Detectron2 remains a potential upgrade.
 type: project
 ---
 
-**Decision (2026-05-30)**: Move repo to Ubuntu via Git and add Detectron2 pose-based shot triggering as a parallel path to the current ball/bat triggers.
+**Completed (2026-06-03)**: Wrist-velocity trigger implemented using YOLOv8-pose (`models/pose/yolov8m-pose.pt`), NOT Detectron2.
 
-**Why**:
-- User evaluated two research papers (optical flow vs Detectron2+XGBoost pose). Assistant recommended the pose approach because the current pipeline's bottleneck is the trigger, not the EfficientNet classifier — the ball detector is too sparse and the bat detector has too many false positives to reliably fire contact events.
-- Detectron2 chosen over MediaPipe because: (a) higher keypoint accuracy on partial occlusion and bent-over stances (sweep, defensive); (b) Paper 2 from RITIK-12-adjacent literature uses Detectron2 specifically; (c) user has GPU and accepts the install cost on Ubuntu.
-- Detectron2 on Windows is a known multi-hour install (specific CUDA + MSVC + pycocotools manual build) — explicitly why the migration to Ubuntu was chosen.
+**Why YOLOv8-pose instead of Detectron2**:
+- torch 2.12+cu132 on Blackwell sm_120 has no Detectron2 prebuilt wheel — source build risk was high
+- YOLOv8-pose already installed in `ball` env, same 17 COCO keypoints, zero install cost
+- Trigger logic is backend-agnostic (`src/detection/pose_detector.py` interface is swappable)
 
-**How to apply when resuming on Ubuntu**:
-1. Fresh clone, set up venv, `pip install -r requirements.txt` plus Detectron2 from facebookresearch wheels matching CUDA version
-2. Add a new `src/detection/pose_detector.py` wrapping Detectron2 Keypoint R-CNN — return 17 COCO keypoints + per-keypoint confidence
-3. In `src/test3.py`, add a third contact-trigger branch: wrist-velocity spike (compute frame-to-frame delta of wrist keypoints; threshold tuned empirically). Fires alongside bat-box and trajectory triggers.
-4. Keep existing EfficientNet ONNX classifier — only the trigger changes, not the classifier
-5. Update CLAUDE.md "Available YOLO Checkpoints" with Detectron2 model path once downloaded
+**Detectron2 is still a valid upgrade path if**:
+- YOLOv8-pose keypoint quality proves insufficient on sweep/defensive shots (bent-over occlusion)
+- To upgrade: swap the backend in `src/detection/pose_detector.py` only — `test3.py` is unchanged
+
+**Current pose architecture**:
+- `src/detection/pose_detector.py` — `PoseDetector` (YOLOv8-pose wrapper) + `WristVelocityTrigger`
+- Batsman selection: high-conf bat box anchor (conf≥0.55, lower 40% of frame) + IoU continuity
+- Wrist speed threshold: 80 px/frame, gated on ball seen within last 15 frames
 
 **Do NOT**:
-- Try Detectron2 on Windows (user explicitly moved off Windows to avoid this)
-- Replace the EfficientNet shot classifier — it works once triggered
-- Re-tune the curvature/accel thresholds — that path is exhausted
-- Adopt the Paper 1 optical-flow approach — rejected because broadcast video has too much camera pan/zoom that dominates pixel-level flow
+- Re-implement Detectron2 unless YOLOv8-pose proves insufficient on specific shot types
+- Change the `PoseDetector` public interface — test3.py depends on `detect()`, `pick_batsman()`, `wrist_positions()`

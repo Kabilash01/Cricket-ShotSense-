@@ -1,30 +1,65 @@
 ---
-name: Cricket-Angle pipeline current state (2026-05-30)
-description: Where test3.py stands, what works, what's broken, and the planned next step
+name: Cricket-Angle pipeline current state (2026-06-03)
+description: Where test3.py stands, what works, what's broken, and what's next
 type: project
 ---
 
-`src/test3.py` is the active pipeline. As of 2026-05-30:
+`src/test3.py` is the active pipeline. As of 2026-06-03:
 
-**Working**:
-- Ball detection: YOLOv8 at `ball_test/weights/best.pt` (conf=0.10) — sparse, ~3 hits per 300 frames
-- Bat detection: YOLOv8 at `models/bat_detector_v8n/weights/best.pt` (conf=0.05, bat_class_id=1, classes are `{0:'-', 1:'bat'}`) — detects many false positives (stumps, umpire, helmet)
-- Shot classifier: EfficientNetB0+GRU ONNX at `models/shot_classifier/shot_classifier.onnx` — converted from RITIK-12/CricketShotClassification h5 weights via `scripts/convert_to_onnx.py`. Loads on CUDAExecutionProvider.
-- Contact detection: bat-box proximity (primary) + trajectory curvature/accel-spike (fallback)
-- Phantom-speed guard: resets tracker if speed > 800 px/frame
-- 45-frame post-contact window — analysis now runs ONCE at window close (fixed 2026-05-30)
+**Environment**:
+- OS: Ubuntu (migrated from Windows 2026-05-31)
+- Conda env: `ball` — Python 3.11, torch 2.12+cu132, ultralytics 8.4, opencv 4.13, onnxruntime-gpu 1.26
+- GPU: RTX 5060 Laptop (Blackwell sm_120, CUDA 13.2) — all models confirmed running on GPU
+- Run command: `HEADLESS=1 VIDEO_PATH=<clip.mp4> conda run -n ball python -m src.test3`
+- AV1-encoded `videoplayback.mp4` requires ffmpeg re-encode first: `conda run -n ball ffmpeg -ss HH:MM:SS -i videoplayback.mp4 -t HH:MM:SS -c:v libx264 -preset veryfast -crf 23 -an clip.mp4`
 
-**Recently fixed (2026-05-30)**:
-- `Events=0 despite contacts firing` bug: analyze-shot block used to run every frame as soon as `post_contact_points > 4`. Within 4 frames the post-contact points were all stale identical tracker predictions, so the zero-movement guard killed the window before real ball motion accumulated. Fix: moved analysis into the `else` branch that fires when `frames_since_contact >= 45`, added `if tracker_updated:` gate on post-contact appends, and added a duplicate-point filter before smoothing.
+**Models in use**:
+- Ball detector: `ball_test/weights/best.pt` (YOLOv8, conf=0.10, class 0=ball)
+- Bat detector: `models/bat_detector_v8n/weights/best.pt` (YOLOv8, conf=0.05, bat_class_id=1)
+- Shot classifier: `models/shot_classifier/shot_classifier.onnx` (EfficientNetB0+GRU, CUDAExecutionProvider)
+- Pose detector: `models/pose/yolov8m-pose.pt` (YOLOv8-pose, conf=0.30) — **NEW**
+
+**Contact triggers (3 parallel paths)**:
+1. **BatBox** (Priority 1): ball centre within 35px of bat bbox — most precise
+2. **Trajectory** (Priority 2): curvature >10° + accel spike >1.5 + speed >5 px/f
+3. **WristVelocity** (Priority 3, NEW): peak wrist keypoint speed ≥80 px/f, gated on ball seen within 15 frames
+
+**Shot classification logic**:
+- `shot_angle` computed as `atan2(dy, dx)` (90° = straight toward bowler)
+- Converted to README wagon-wheel coords: `geo_angle = (90 - shot_angle) % 360`
+- Geometry `classify_shot(geo_angle)` is PRIMARY using 10-shot table
+- EfficientNet overrides ONLY when confidence ≥97%
+- `wagon_wheel_angle` in events.json stores `geo_angle` (not raw atan2 angle)
+
+**Batsman tracking (pose)**:
+- `POSE_BAT_CONF=0.55` + y-position filter: only high-conf bat detections in lower 40% of frame anchor the pose tracker
+- IoU continuity (min 0.20) keeps tracker on same person across frames
+- Prevents umpire/bowler from being tracked as batsman
+
+**Key tuning constants in test3.py CONFIG block**:
+```
+WRIST_SPEED_THRESHOLD    = 80.0   px/frame
+WRIST_REQUIRE_BALL_WITHIN = 15    frames
+POSE_BAT_CONF            = 0.55
+POSE_BAT_MIN_Y_FRAC      = 0.40
+CONTACT_COOLDOWN_FRAMES  = 90
+INTERP_MAX_GAP           = 3
+```
+
+**Validated results on test_clip2.mp4 (19:50–24:00, 4 min)**:
+- 6 events saved: Flick, Straight Drive, Lofted Drive×2, Late Cut, Straight Drive
+- No stale future_trajectory bug
+- No OOM (frame_buffer stores 224×224 resized frames)
 
 **Known remaining issues**:
-- Bat detector misclassifies stumps/umpire/helmet as bats — user explicitly flagged this
-- Ball detection too sparse for reliable trajectory-based contact triggering
-- User reports "missing bat-ball contact sometimes" even with current fix
+- Ball detection still sparse (~10% hit rate) — limits post-contact trajectory quality
+- EfficientNet at 100% sometimes disagrees with geometry angle (misfires on follow-through frames)
+- Delivery segmentation not implemented — ball_id increments per detection, not per delivery
+- Bowler may still get pose box occasionally if bat detector fires on the ball in his hand
 
 **Why**: User wants reliable per-delivery event extraction for analytics (`events.json`).
 
 **How to apply**:
-- Default to pose-based triggering (Detectron2 on Ubuntu) as the next architectural step — see `project_next_step_detectron2.md`
-- Don't propose more tweaks to the curvature/accel thresholds — that path is exhausted
-- When verifying current behavior, re-read `src/test3.py` before quoting line numbers (file changes rapidly)
+- Always re-read `src/test3.py` before quoting line numbers — file changes rapidly
+- Don't re-implement things already in `shot_analyzer.py` — port from there if needed
+- Next priority: delivery segmentation, then EfficientNet reliability improvement

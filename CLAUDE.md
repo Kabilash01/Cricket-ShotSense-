@@ -1,28 +1,48 @@
 
 # Cricket-Angle — Project Context
 
-## Active Work (as of 2026-05-30)
+## Active Work (as of 2026-06-03)
 
 The current pipeline is `src/test3.py` (not `test.py` / `test2.py` — those are older). It uses:
 
 - YOLOv8 ball detector: `ball_test/weights/best.pt` (conf=0.10, class 0=ball)
 - YOLOv8 bat detector: `models/bat_detector_v8n/weights/best.pt` (conf=0.05, **bat_class_id=1** because model classes are `{0:'-', 1:'bat'}`)
 - ONNX EfficientNetB0+GRU shot classifier: `models/shot_classifier/shot_classifier.onnx` (converted from RITIK-12/CricketShotClassification via `scripts/convert_to_onnx.py`)
+- **YOLOv8-pose**: `models/pose/yolov8m-pose.pt` (conf=0.30) — wrist-velocity contact trigger
 
-**Open problem**: bat-ball contacts are missed (ball detection is sparse, bat detector hallucinates on stumps/umpire/helmet).
+**Three parallel contact triggers** (all active in test3.py):
 
-**Agreed next step**: add Detectron2 pose-based wrist-velocity triggering as a third parallel contact trigger. Implement on Ubuntu, not Windows — Detectron2 on Windows is a known multi-hour install. See `memory/project_next_step_detectron2.md` for the full plan.
+1. BatBox proximity (Priority 1) — ball within 35px of bat bbox
+2. Trajectory curvature + accel spike (Priority 2)
+3. Wrist-velocity spike ≥80 px/frame (Priority 3, NEW) — gated on ball seen within 15 frames
 
-## Ubuntu Migration Quickstart
+**Shot classification**: geometry angle (wagon-wheel, 10-shot table) is primary. EfficientNet overrides only at ≥97% confidence.
 
-If you are reading this on Ubuntu after a Git pull:
+**Validated on**: `test_clip2.mp4` (19:50–24:00 from videoplayback.mp4) — 6 events saved correctly.
 
-1. `python3 -m venv .venv && source .venv/bin/activate`
-2. `pip install -r requirements.txt`
-3. Install Detectron2 from prebuilt wheel matching local CUDA version (see [Detectron2 install guide](https://detectron2.readthedocs.io/en/latest/tutorials/install.html))
-4. Update absolute paths in `src/test3.py` CONFIG block — change `C:\Cricket-Angle\...` to repo-relative paths
-5. Read `memory/MEMORY.md` for full context before making decisions
-6. Verify ONNX classifier loads: `python -c "import onnxruntime as ort; print(ort.get_available_providers())"` — should list `CUDAExecutionProvider`
+**Open problems**:
+
+- Ball detection still sparse (~10% hit rate) — limits post-contact trajectory quality
+- EfficientNet at 100% confidence sometimes overrides geometry with wrong labels (misfires on follow-through frames)
+- Delivery segmentation not implemented (ball_id increments per detection, not per delivery)
+
+## Environment Quickstart (Ubuntu, conda env `ball`)
+
+```bash
+conda activate ball
+# videoplayback.mp4 is AV1-encoded — re-encode a clip to H.264 first:
+conda run -n ball ffmpeg -ss 00:19:50 -i videoplayback.mp4 -t 00:04:10 \
+    -c:v libx264 -preset veryfast -crf 23 -an test_clip2.mp4
+
+# Run pipeline headless:
+HEADLESS=1 VIDEO_PATH=test_clip2.mp4 conda run -n ball python -m src.test3
+
+# Re-encode output for playback:
+conda run -n ball ffmpeg -y -i output_analysis.mp4 -c:v libx264 \
+    -preset veryfast -crf 22 -movflags +faststart output_analysis_h264.mp4
+```
+
+Read `memory/MEMORY.md` for full context before making decisions.
 
 ## Project Goal
 
