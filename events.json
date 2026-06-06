@@ -1,131 +1,632 @@
 [
     {
-        "ball_id": 9,
+        "ball_id": 1,
         "delivery_id": 0,
+        "event": "ball_bat_contact",
+        "frame": 36,
+        "timestamp_sec": 1.2,
+        "wagon_wheel_angle": null,
+        "shot_name": "Flick",
+        "classifier_confidence": 85.28,
+        "predicted_distance_m": 0,
+        "has_trajectory": false,
+        "contact_point": {
+            "x": 1050,
+            "y": 505
+        },
+        "future_trajectory": []
+    },
+    {
+        "ball_id": 2,
+        "delivery_id": 0,
+        "event": "ball_bat_contact",
+        "frame": 136,
+        "timestamp_sec": 4.54,
+        "wagon_wheel_angle": 265.03,
+        "shot_name": "Flick",
+        "classifier_confidence": 100.0,
+        "predicted_distance_m": 4.11,
+        "has_trajectory": true,
+        "contact_point": {
+            "x": 1069,
+            "y": 467
+        },
+        "future_trajectory": [
+            [
+                954,
+                477
+            ],
+            [
+                960,
+                476
+            ],
+            [
+                966,
+                476
+            ],
+            [
+                973,
+                475
+            ],
+            [
+                979,
+                475
+            ],
+            [
+                986,
+                474
+            ],
+            [
+                992,
+                474
+            ],
+            [
+                998,
+                473
+            ],
+            [
+                1005,
+                473
+            ],
+            [
+                1011,
+                472
+            ],
+            [
+                1018,
+                471
+            ],
+            [
+                1024,
+                471
+            ],
+            [
+                1030,
+                470
+            ],
+            [
+                1037,
+                470
+            ],
+            [
+                1043,
+                469
+            ],
+            [
+                1050,
+                468
+            ],
+            [
+                1056,
+                468
+            ],
+            [
+                1062,
+                467
+            ],
+            [
+                1069,
+                466
+            ],
+            [
+                1075,
+                466
+            ],
+            [
+                1082,
+                465
+            ],
+            [
+                1088,
+                464
+            ],
+            [
+                1095,
+                464
+            ],
+            [
+                1101,
+                463
+            ],
+            [
+                1107,
+                462
+            ],
+            [
+                1114,
+                462
+            ],
+            [
+                1120,
+                461
+            ],
+            [
+                1127,
+                460
+            ],
+            [
+                1133,
+                459
+            ],
+            [
+                1139,
+                459
+            ],
+            [
+                1146,
+                458
+            ],
+            [
+                1152,
+                457
+            ],
+            [
+                1159,
+                456
+            ],
+            [
+                1165,
+                456
+            ],
+            [
+                1171,
+                455
+            ],
+            [
+                1178,
+                454
+            ],
+            [
+                1184,
+                453
+            ],
+            [
+                1191,
+                452
+            ],
+            [
+                1197,
+                451
+            ],
+            [
+                1204,
+                451
+            ]
+        ]
+    },
+    {
+        "ball_id": 7,
+        "delivery_id": 0,
+        "event": "ball_bat_contact",
+        "frame": 294,
+        "timestamp_sec": 9.81,
+        "wagon_wheel_angle": 166.32,
+        "shot_name": "Edge",
+        "classifier_confidence": 98.49,
+        "predicted_distance_m": 9.67,
+        "has_trajectory": true,
+        "contact_point": {
+            "x": 787,
+            "y": 367
+        },
+        "future_trajectory": [
+            [
+                843,
+                600
+            ],
+            [
+                849,
+                614
+            ],
+            [
+                855,
+                629
+            ],
+            [
+                862,
+                643
+            ],
+            [
+                868,
+                656
+            ],
+            [
+                875,
+                670
+            ],
+            [
+                881,
+                683
+            ],
+            [
+                887,
+                696
+            ],
+            [
+                894,
+                709
+            ],
+            [
+                900,
+                721
+            ],
+            [
+                907,
+                733
+            ],
+            [
+                913,
+                745
+            ],
+            [
+                919,
+                757
+            ],
+            [
+                926,
+                769
+            ],
+            [
+                932,
+                780
+            ],
+            [
+                939,
+                791
+            ],
+            [
+                945,
+                801
+            ],
+            [
+                951,
+                812
+            ],
+            [
+                958,
+                822
+            ],
+            [
+                964,
+                832
+            ],
+            [
+                971,
+                842
+            ],
+            [
+                977,
+                851
+            ],
+            [
+                984,
+                861
+            ],
+            [
+                990,
+                869
+            ],
+            [
+                996,
+                878
+            ],
+            [
+                1003,
+                887
+            ],
+            [
+                1009,
+                895
+            ],
+            [
+                1016,
+                903
+            ],
+            [
+                1022,
+                911
+            ],
+            [
+                1028,
+                918
+            ],
+            [
+                1035,
+                925
+            ],
+            [
+                1041,
+                932
+            ],
+            [
+                1048,
+                939
+            ],
+            [
+                1054,
+                946
+            ],
+            [
+                1060,
+                952
+            ],
+            [
+                1067,
+                958
+            ],
+            [
+                1073,
+                963
+            ],
+            [
+                1080,
+                969
+            ],
+            [
+                1086,
+                974
+            ],
+            [
+                1093,
+                979
+            ]
+        ]
+    },
+    {
+        "ball_id": 8,
+        "delivery_id": 1,
         "event": "ball_bat_contact",
         "frame": 539,
         "timestamp_sec": 17.98,
-        "wagon_wheel_angle": 201.99,
+        "wagon_wheel_angle": 200.14,
         "shot_name": "Leg Glance",
         "classifier_confidence": 99.55,
-        "predicted_distance_m": 2.47,
+        "predicted_distance_m": 2.75,
+        "has_trajectory": true,
         "contact_point": {
             "x": 731,
             "y": 116
         },
         "future_trajectory": [
             [
-                710,
-                168
+                709,
+                175
             ],
             [
-                716,
-                143
+                715,
+                147
             ],
             [
-                722,
-                124
+                721,
+                126
             ],
             [
-                729,
-                113
+                728,
+                114
             ],
             [
-                735,
-                109
+                734,
+                111
             ],
             [
-                742,
-                113
+                741,
+                115
             ],
             [
-                748,
-                124
+                747,
+                129
             ],
             [
-                754,
-                143
+                753,
+                150
             ],
             [
-                761,
-                168
+                760,
+                180
             ],
             [
-                767,
-                201
+                766,
+                219
             ],
             [
-                774,
-                242
+                773,
+                266
             ],
             [
-                780,
-                290
+                779,
+                321
             ],
             [
-                786,
-                345
+                785,
+                384
             ],
             [
-                793,
-                407
+                792,
+                456
             ],
             [
-                799,
-                477
+                798,
+                537
             ],
             [
-                806,
-                555
+                805,
+                626
             ],
             [
-                812,
-                639
+                811,
+                723
             ],
             [
-                818,
-                731
+                817,
+                828
             ],
             [
-                825,
-                831
+                824,
+                942
             ],
             [
-                831,
-                937
+                830,
+                1065
+            ]
+        ]
+    },
+    {
+        "ball_id": 11,
+        "delivery_id": 2,
+        "event": "ball_bat_contact",
+        "frame": 939,
+        "timestamp_sec": 31.33,
+        "wagon_wheel_angle": 284.97,
+        "shot_name": "Pull Shot",
+        "classifier_confidence": 85.55,
+        "predicted_distance_m": 7.0,
+        "has_trajectory": true,
+        "contact_point": {
+            "x": 943,
+            "y": 400
+        },
+        "future_trajectory": [
+            [
+                857,
+                428
             ],
             [
-                838,
-                1051
+                863,
+                433
+            ],
+            [
+                869,
+                437
+            ],
+            [
+                876,
+                440
+            ],
+            [
+                882,
+                441
+            ],
+            [
+                889,
+                441
+            ],
+            [
+                895,
+                440
+            ],
+            [
+                901,
+                438
+            ],
+            [
+                908,
+                435
+            ],
+            [
+                914,
+                430
+            ],
+            [
+                921,
+                425
+            ],
+            [
+                927,
+                418
+            ],
+            [
+                933,
+                410
+            ],
+            [
+                940,
+                400
+            ],
+            [
+                946,
+                390
+            ],
+            [
+                953,
+                378
+            ],
+            [
+                959,
+                365
+            ],
+            [
+                965,
+                351
+            ],
+            [
+                972,
+                336
+            ],
+            [
+                978,
+                319
+            ],
+            [
+                985,
+                302
+            ],
+            [
+                991,
+                283
+            ],
+            [
+                998,
+                263
+            ],
+            [
+                1004,
+                241
+            ],
+            [
+                1010,
+                219
+            ],
+            [
+                1017,
+                195
+            ],
+            [
+                1023,
+                170
+            ],
+            [
+                1030,
+                144
+            ],
+            [
+                1036,
+                117
+            ],
+            [
+                1042,
+                88
+            ],
+            [
+                1049,
+                59
+            ],
+            [
+                1055,
+                28
             ]
         ]
     },
     {
         "ball_id": 13,
-        "delivery_id": 0,
-        "event": "ball_bat_contact",
-        "frame": 953,
-        "timestamp_sec": 31.8,
-        "wagon_wheel_angle": 0.66,
-        "shot_name": "Straight Drive",
-        "classifier_confidence": 95.14,
-        "predicted_distance_m": 3.15,
-        "contact_point": {
-            "x": 856,
-            "y": 464
-        },
-        "future_trajectory": []
-    },
-    {
-        "ball_id": 15,
-        "delivery_id": 0,
+        "delivery_id": 2,
         "event": "ball_bat_contact",
         "frame": 1045,
         "timestamp_sec": 34.87,
         "wagon_wheel_angle": 94.29,
         "shot_name": "Lofted Drive",
         "classifier_confidence": 100.0,
-        "predicted_distance_m": 19.92,
+        "predicted_distance_m": 19.73,
+        "has_trajectory": true,
         "contact_point": {
             "x": 850,
             "y": 298
@@ -133,185 +634,367 @@
         "future_trajectory": [
             [
                 890,
-                367
+                362
             ],
             [
                 896,
-                264
+                291
             ],
             [
                 902,
-                137
+                207
+            ],
+            [
+                909,
+                108
             ]
         ]
     },
     {
-        "ball_id": 30,
-        "delivery_id": 0,
+        "ball_id": 21,
+        "delivery_id": 2,
         "event": "ball_bat_contact",
-        "frame": 3367,
-        "timestamp_sec": 112.35,
-        "wagon_wheel_angle": 226.89,
-        "shot_name": "Leg Glance",
-        "classifier_confidence": 100.0,
-        "predicted_distance_m": 2.57,
+        "frame": 2852,
+        "timestamp_sec": 95.16,
+        "wagon_wheel_angle": null,
+        "shot_name": "Lofted Drive",
+        "classifier_confidence": 99.54,
+        "predicted_distance_m": 0,
+        "has_trajectory": false,
         "contact_point": {
-            "x": 926,
-            "y": 361
+            "x": 1170,
+            "y": 444
+        },
+        "future_trajectory": []
+    },
+    {
+        "ball_id": 24,
+        "delivery_id": 2,
+        "event": "ball_bat_contact",
+        "frame": 3282,
+        "timestamp_sec": 109.51,
+        "wagon_wheel_angle": null,
+        "shot_name": "Hook Shot",
+        "classifier_confidence": 85.36,
+        "predicted_distance_m": 0,
+        "has_trajectory": false,
+        "contact_point": {
+            "x": 634,
+            "y": 140
+        },
+        "future_trajectory": []
+    },
+    {
+        "ball_id": 25,
+        "delivery_id": 3,
+        "event": "ball_bat_contact",
+        "frame": 3373,
+        "timestamp_sec": 112.55,
+        "wagon_wheel_angle": null,
+        "shot_name": "Lofted Drive",
+        "classifier_confidence": 99.99,
+        "predicted_distance_m": 0,
+        "has_trajectory": false,
+        "contact_point": {
+            "x": 918,
+            "y": 229
+        },
+        "future_trajectory": []
+    },
+    {
+        "ball_id": 27,
+        "delivery_id": 4,
+        "event": "ball_bat_contact",
+        "frame": 4493,
+        "timestamp_sec": 149.92,
+        "wagon_wheel_angle": null,
+        "shot_name": "Hook Shot",
+        "classifier_confidence": 91.95,
+        "predicted_distance_m": 0,
+        "has_trajectory": false,
+        "contact_point": {
+            "x": 1052,
+            "y": 441
+        },
+        "future_trajectory": []
+    },
+    {
+        "ball_id": 27,
+        "delivery_id": 4,
+        "event": "ball_bat_contact",
+        "frame": 4710,
+        "timestamp_sec": 157.16,
+        "wagon_wheel_angle": null,
+        "shot_name": "Lofted Drive",
+        "classifier_confidence": 99.96,
+        "predicted_distance_m": 0,
+        "has_trajectory": false,
+        "contact_point": {
+            "x": 537,
+            "y": 528
+        },
+        "future_trajectory": []
+    },
+    {
+        "ball_id": 34,
+        "delivery_id": 5,
+        "event": "ball_bat_contact",
+        "frame": 4826,
+        "timestamp_sec": 161.03,
+        "wagon_wheel_angle": 148.39,
+        "shot_name": "Late Cut",
+        "classifier_confidence": 97.18,
+        "predicted_distance_m": 10.09,
+        "has_trajectory": true,
+        "contact_point": {
+            "x": 871,
+            "y": 352
         },
         "future_trajectory": [
             [
-                879,
-                403
-            ],
-            [
-                885,
-                404
-            ],
-            [
-                891,
-                402
-            ],
-            [
-                898,
-                400
-            ],
-            [
-                904,
-                395
-            ],
-            [
-                911,
-                389
-            ],
-            [
-                917,
-                382
-            ],
-            [
-                923,
-                373
-            ],
-            [
-                930,
-                363
-            ],
-            [
-                936,
-                351
-            ],
-            [
                 943,
-                338
+                451
             ],
             [
                 949,
-                323
+                454
             ],
             [
                 955,
-                307
+                457
             ],
             [
                 962,
-                289
+                459
             ],
             [
                 968,
-                270
+                461
             ],
             [
                 975,
-                249
+                463
             ],
             [
                 981,
-                227
+                464
             ],
             [
                 987,
-                203
+                465
             ],
             [
                 994,
-                177
+                465
             ],
             [
                 1000,
-                151
+                465
             ],
             [
                 1007,
-                122
+                465
             ],
             [
                 1013,
-                92
+                465
             ],
             [
-                1020,
-                61
+                1019,
+                464
             ],
             [
                 1026,
-                28
+                463
+            ],
+            [
+                1032,
+                461
+            ],
+            [
+                1039,
+                459
+            ],
+            [
+                1045,
+                457
+            ],
+            [
+                1051,
+                454
+            ],
+            [
+                1058,
+                451
+            ],
+            [
+                1064,
+                448
+            ],
+            [
+                1071,
+                445
+            ],
+            [
+                1077,
+                441
+            ],
+            [
+                1084,
+                436
+            ],
+            [
+                1090,
+                432
+            ],
+            [
+                1096,
+                427
+            ],
+            [
+                1103,
+                421
+            ],
+            [
+                1109,
+                416
+            ],
+            [
+                1116,
+                410
+            ],
+            [
+                1122,
+                403
+            ],
+            [
+                1128,
+                396
+            ],
+            [
+                1135,
+                389
+            ],
+            [
+                1141,
+                382
+            ],
+            [
+                1148,
+                374
+            ],
+            [
+                1154,
+                366
+            ],
+            [
+                1160,
+                358
+            ],
+            [
+                1167,
+                349
+            ],
+            [
+                1173,
+                340
+            ],
+            [
+                1180,
+                330
+            ],
+            [
+                1186,
+                320
+            ],
+            [
+                1193,
+                310
             ]
         ]
     },
     {
-        "ball_id": 58,
-        "delivery_id": 0,
+        "ball_id": 37,
+        "delivery_id": 6,
+        "event": "ball_bat_contact",
+        "frame": 5037,
+        "timestamp_sec": 168.07,
+        "wagon_wheel_angle": null,
+        "shot_name": "Lofted Drive",
+        "classifier_confidence": 99.89,
+        "predicted_distance_m": 0,
+        "has_trajectory": false,
+        "contact_point": {
+            "x": 522,
+            "y": 484
+        },
+        "future_trajectory": []
+    },
+    {
+        "ball_id": 37,
+        "delivery_id": 6,
+        "event": "ball_bat_contact",
+        "frame": 5129,
+        "timestamp_sec": 171.14,
+        "wagon_wheel_angle": null,
+        "shot_name": "Lofted Drive",
+        "classifier_confidence": 90.78,
+        "predicted_distance_m": 0,
+        "has_trajectory": false,
+        "contact_point": {
+            "x": 963,
+            "y": 161
+        },
+        "future_trajectory": []
+    },
+    {
+        "ball_id": 37,
+        "delivery_id": 6,
+        "event": "ball_bat_contact",
+        "frame": 5220,
+        "timestamp_sec": 174.17,
+        "wagon_wheel_angle": null,
+        "shot_name": "Flick",
+        "classifier_confidence": 89.52,
+        "predicted_distance_m": 0,
+        "has_trajectory": false,
+        "contact_point": {
+            "x": 429,
+            "y": 67
+        },
+        "future_trajectory": []
+    },
+    {
+        "ball_id": 44,
+        "delivery_id": 6,
         "event": "ball_bat_contact",
         "frame": 5986,
         "timestamp_sec": 199.73,
-        "wagon_wheel_angle": 164.05,
+        "wagon_wheel_angle": null,
         "shot_name": "Late Cut",
         "classifier_confidence": 99.98,
-        "predicted_distance_m": 2.87,
+        "predicted_distance_m": 0,
+        "has_trajectory": false,
         "contact_point": {
-            "x": 871,
-            "y": 619
+            "x": 1062,
+            "y": 643
         },
-        "future_trajectory": [
-            [
-                893,
-                693
-            ],
-            [
-                899,
-                735
-            ],
-            [
-                905,
-                788
-            ],
-            [
-                912,
-                850
-            ],
-            [
-                918,
-                921
-            ],
-            [
-                925,
-                1002
-            ]
-        ]
+        "future_trajectory": []
     },
     {
-        "ball_id": 74,
-        "delivery_id": 0,
+        "ball_id": 59,
+        "delivery_id": 7,
         "event": "ball_bat_contact",
         "frame": 6455,
         "timestamp_sec": 215.38,
-        "wagon_wheel_angle": 156.12,
+        "wagon_wheel_angle": 157.18,
         "shot_name": "Edge",
         "classifier_confidence": 99.84,
-        "predicted_distance_m": 7.24,
+        "predicted_distance_m": 7.93,
+        "has_trajectory": true,
         "contact_point": {
-            "x": 835,
-            "y": 402
+            "x": 831,
+            "y": 383
         },
         "future_trajectory": [
             [
@@ -324,7 +1007,7 @@
             ],
             [
                 928,
-                587
+                588
             ],
             [
                 935,
@@ -336,100 +1019,151 @@
             ],
             [
                 948,
-                581
+                582
             ],
             [
                 954,
-                575
+                576
             ],
             [
                 960,
-                568
+                569
             ],
             [
                 967,
-                559
+                560
             ],
             [
                 973,
-                548
+                550
             ],
             [
                 980,
-                536
+                538
             ],
             [
                 986,
-                521
+                524
             ],
             [
                 992,
-                506
+                508
             ],
             [
                 999,
-                488
+                491
             ],
             [
                 1005,
-                469
+                472
             ],
             [
                 1012,
-                448
+                451
             ],
             [
                 1018,
-                425
+                429
             ],
             [
                 1024,
-                400
+                405
             ],
             [
                 1031,
-                374
+                379
             ],
             [
                 1037,
-                346
+                352
             ],
             [
                 1044,
-                317
+                322
             ],
             [
                 1050,
-                285
+                292
             ],
             [
                 1057,
-                252
+                259
             ],
             [
                 1063,
-                217
+                225
             ],
             [
                 1069,
-                181
+                189
             ],
             [
                 1076,
-                143
+                151
             ],
             [
                 1082,
-                103
+                112
             ],
             [
                 1089,
-                61
+                71
             ],
             [
                 1095,
-                18
+                28
             ]
         ]
+    },
+    {
+        "ball_id": 62,
+        "delivery_id": 8,
+        "event": "ball_bat_contact",
+        "frame": 6626,
+        "timestamp_sec": 221.09,
+        "wagon_wheel_angle": null,
+        "shot_name": "Lofted Drive",
+        "classifier_confidence": 99.65,
+        "predicted_distance_m": 0,
+        "has_trajectory": false,
+        "contact_point": {
+            "x": 1429,
+            "y": 637
+        },
+        "future_trajectory": []
+    },
+    {
+        "ball_id": 69,
+        "delivery_id": 8,
+        "event": "ball_bat_contact",
+        "frame": 6885,
+        "timestamp_sec": 229.73,
+        "wagon_wheel_angle": null,
+        "shot_name": "Flick",
+        "classifier_confidence": 99.99,
+        "predicted_distance_m": 0,
+        "has_trajectory": false,
+        "contact_point": {
+            "x": 1822,
+            "y": 468
+        },
+        "future_trajectory": []
+    },
+    {
+        "ball_id": 70,
+        "delivery_id": 9,
+        "event": "ball_bat_contact",
+        "frame": 7097,
+        "timestamp_sec": 236.8,
+        "wagon_wheel_angle": null,
+        "shot_name": "Pull Shot",
+        "classifier_confidence": 99.17,
+        "predicted_distance_m": 0,
+        "has_trajectory": false,
+        "contact_point": {
+            "x": 1775,
+            "y": 814
+        },
+        "future_trajectory": []
     }
 ]

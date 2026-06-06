@@ -66,7 +66,7 @@ METERS_PER_PIXEL = 18.5 / 520
 
 ball_detector = YoloBallDetector(
     model_path=BALL_MODEL_PATH,
-    conf=0.10,
+    conf=0.07,
     ball_class_id=0
 )
 
@@ -153,7 +153,7 @@ future_trajectory = []
 speed_history = deque(maxlen=15)
 
 # Ball detection gap interpolation state
-INTERP_MAX_GAP = 3          # fill gaps up to this many missed frames
+INTERP_MAX_GAP = 5          # fill gaps up to this many missed frames
 last_ball_pos  = None       # last confirmed detection (x, y)
 last_ball_frame = -999      # frame index of last_ball_pos
 
@@ -179,7 +179,8 @@ contact_frame = -999
 # SHOT INFO
 # =========================================================
 
-shot_angle = None
+shot_angle = None   # raw atan2 value (internal)
+geo_angle  = None   # wagon-wheel angle displayed/saved (0°=straight)
 shot_name = None
 predicted_distance = 0
 
@@ -482,12 +483,18 @@ while True:
     if detections and tracker.missed_frames >= 30:
         cx0, cy0, *_ = detections[0]
         if cy0 < height * 0.35:
-            delivery_id += 1
-            shot_name         = None
-            shot_angle        = None
+            delivery_id       += 1
+            shot_name          = None
+            shot_angle         = None
+            geo_angle          = None
             predicted_distance = 0
-            future_trajectory = []
+            future_trajectory  = []
+            last_ball_pos      = None
+            last_ball_frame    = -999
             wrist_trigger.reset()
+            tracker.reset()             # force fresh ball_id on new delivery
+            trajectory_history.clear()
+            speed_history.clear()
             print(f"[F{frame_idx}] 🏏 NEW DELIVERY #{delivery_id}")
 
     # =====================================================
@@ -549,7 +556,7 @@ while True:
             tracker_updated = True
 
         # Reset tracker if ball has been missing too long
-        if tracker.missed_frames > 30:
+        if tracker.missed_frames > 60:
             tracker.reset()
             trajectory_history.clear()
             speed_history.clear()
@@ -682,61 +689,26 @@ while True:
                     ):
                         unique_points.append(pt)
 
-                if len(unique_points) > 4:
+                has_trajectory = len(unique_points) > 4
 
+                # --- Trajectory-based classification (when ball tracked) ---
+                geo_angle          = None
+                geo_name           = None
+                predicted_distance = 0
+
+                if has_trajectory:
                     smooth_points = smooth_trajectory(unique_points)
-
                     if len(smooth_points) > 5:
-
                         p1 = smooth_points[0]
                         p2 = smooth_points[-1]
-
                         dx = p2[0] - p1[0]
                         dy = p1[1] - p2[1]
-
-                        if abs(dx) < 3 and abs(dy) < 3:
-                            print(
-                                f"[F{frame_idx}] Zero trajectory after window "
-                                f"(dx={dx}, dy={dy}, pts={len(unique_points)}) - skip"
-                            )
-                        else:
-                            shot_angle = math.degrees(math.atan2(dy, dx))
-                            if shot_angle < 0:
-                                shot_angle += 360
-
-                            # shot_angle is atan2(dy, dx) where 90° = straight
-                            # toward bowler. Convert to README wagon-wheel coords
-                            # (0° = straight, clockwise) before classifying.
-                            geo_angle = (90 - shot_angle) % 360
+                        if abs(dx) >= 3 or abs(dy) >= 3:
+                            raw_angle = math.degrees(math.atan2(dy, dx))
+                            if raw_angle < 0:
+                                raw_angle += 360
+                            geo_angle = (90 - raw_angle) % 360
                             geo_name  = classify_shot(geo_angle)
-
-                            if shot_classifier is not None and len(contact_frames) >= 10:
-                                clf_name, clf_conf = shot_classifier.classify(contact_frames)
-                                # Override geometry only when EfficientNet is
-                                # ≥97% confident AND its label's expected angle
-                                # is within 100° of the actual ball direction.
-                                clf_centre = SHOT_CENTRE_ANGLE.get(clf_name, 180)
-                                angle_ok   = _angle_diff(clf_centre, geo_angle) <= 100
-                                if clf_conf >= 97.0 and angle_ok:
-                                    shot_name = clf_name
-                                    print(
-                                        f"[F{frame_idx}] EfficientNet override -> {shot_name} "
-                                        f"({clf_conf:.1f}%)  geo={geo_name} geo_angle={geo_angle:.1f}"
-                                    )
-                                else:
-                                    shot_name = geo_name
-                                    reason = f"{clf_conf:.1f}% < 97" if clf_conf < 97.0 else f"angle diff {_angle_diff(clf_centre, geo_angle):.0f}° > 100"
-                                    print(
-                                        f"[F{frame_idx}] geometry -> {shot_name} "
-                                        f"geo_angle={geo_angle:.1f}  EfficientNet={clf_name} ({reason} — ignored)"
-                                    )
-                            else:
-                                shot_name = geo_name
-                                clf_conf  = 0.0
-                                print(
-                                    f"[F{frame_idx}] geometry -> {shot_name} "
-                                    f"geo_angle={geo_angle:.1f} deg"
-                                )
 
                             predicted_distance = 0
                             for i in range(1, len(smooth_points)):
@@ -752,7 +724,7 @@ while True:
                                 y_vals = pts[:, 1]
                                 if np.max(x_vals) - np.min(x_vals) > 20:
                                     coeffs = np.polyfit(x_vals, y_vals, 2)
-                                    poly = np.poly1d(coeffs)
+                                    poly   = np.poly1d(coeffs)
                                     xs = np.linspace(x_vals[-1], x_vals[-1] + 250, 40)
                                     ys = poly(xs)
                                     future_trajectory = [
@@ -762,40 +734,83 @@ while True:
                                     ]
                             except Exception:
                                 pass
+                    else:
+                        has_trajectory = False  # smoothing ate the points
 
-                            already_saved = any(
-                                evt.get("frame") == contact_frame and
-                                evt.get("ball_id") == ball_id
-                                for evt in events
-                            )
-
-                            if not already_saved:
-                                event = {
-                                    "ball_id": ball_id,
-                                    "delivery_id": delivery_id,
-                                    "event": "ball_bat_contact",
-                                    "frame": contact_frame,
-                                    "timestamp_sec": round(contact_frame / fps, 2),
-                                    "wagon_wheel_angle": round(geo_angle, 2),
-                                    "shot_name": shot_name,
-                                    "classifier_confidence": round(clf_conf, 2),
-                                    "predicted_distance_m": round(predicted_distance, 2),
-                                    "contact_point": {
-                                        "x": int(p1[0]),
-                                        "y": int(p1[1])
-                                    },
-                                    "future_trajectory": [
-                                        [fpx, fpy] for fpx, fpy in future_trajectory
-                                    ]
-                                }
-                                events.append(event)
-                                print("SHOT EVENT:", event)
-
+                # contact_point: first post-contact ball point, or bat_box centre,
+                # or tracker position as last resort.
+                if has_trajectory and smooth_points:
+                    cp = smooth_points[0]
+                elif bat_box is not None:
+                    cp = ((bat_box[0] + bat_box[2]) // 2, (bat_box[1] + bat_box[3]) // 2)
+                elif tracker.initialized:
+                    tx, ty = int(tracker.get_position()[0]), int(tracker.get_position()[1])
+                    # Reject tracker positions stuck at screen edges (false detections)
+                    if 0 < tx < int(width * 0.95) and int(height * 0.03) < ty < height:
+                        cp = (tx, ty)
+                    else:
+                        cp = None
                 else:
-                    print(
-                        f"[F{frame_idx}] Not enough unique post-contact points "
-                        f"({len(unique_points)}) - skip"
+                    cp = None
+
+                # --- Shot classification ---
+                clf_name = None
+                clf_conf = 0.0
+
+                if shot_classifier is not None and len(contact_frames) >= 10:
+                    clf_name, clf_conf = shot_classifier.classify(contact_frames)
+
+                if has_trajectory and geo_name is not None:
+                    # Geometry available: use it as primary, EfficientNet secondary
+                    clf_centre = SHOT_CENTRE_ANGLE.get(clf_name or "", 180)
+                    angle_ok   = clf_name and _angle_diff(clf_centre, geo_angle) <= 100
+                    if clf_conf >= 97.0 and angle_ok:
+                        shot_name = clf_name
+                        print(f"[F{frame_idx}] EfficientNet override -> {shot_name} "
+                              f"({clf_conf:.1f}%)  geo={geo_name} geo_angle={geo_angle:.1f}")
+                    else:
+                        shot_name = geo_name
+                        reason = f"{clf_conf:.1f}% < 97" if clf_conf < 97.0 else \
+                                 f"angle diff {_angle_diff(clf_centre, geo_angle):.0f}° > 100"
+                        print(f"[F{frame_idx}] geometry -> {shot_name} "
+                              f"geo_angle={geo_angle:.1f}  "
+                              f"EfficientNet={clf_name} ({reason} — ignored)")
+                elif clf_name and clf_conf >= 85.0:
+                    # No trajectory: EfficientNet only (threshold 85% to reduce noise)
+                    shot_name = clf_name
+                    geo_angle = -1.0  # sentinel: no geometry
+                    print(f"[F{frame_idx}] EfficientNet (no traj) -> {shot_name} "
+                          f"({clf_conf:.1f}%)")
+                else:
+                    # Neither — skip this event
+                    print(f"[F{frame_idx}] Skip — no trajectory "
+                          f"({len(unique_points)} pts) and EfficientNet "
+                          f"{'not loaded' if shot_classifier is None else f'{clf_conf:.1f}% < 85'}")
+                    shot_name = None
+
+                if shot_name is not None and cp is not None:
+                    already_saved = any(
+                        evt.get("frame") == contact_frame and
+                        evt.get("ball_id") == ball_id
+                        for evt in events
                     )
+                    if not already_saved:
+                        event = {
+                            "ball_id":              ball_id,
+                            "delivery_id":          delivery_id,
+                            "event":                "ball_bat_contact",
+                            "frame":                contact_frame,
+                            "timestamp_sec":        round(contact_frame / fps, 2),
+                            "wagon_wheel_angle":    round(geo_angle, 2) if geo_angle is not None and geo_angle >= 0 else None,
+                            "shot_name":            shot_name,
+                            "classifier_confidence": round(clf_conf, 2),
+                            "predicted_distance_m": round(predicted_distance, 2),
+                            "has_trajectory":       has_trajectory,
+                            "contact_point":        {"x": int(cp[0]),  "y": int(cp[1])},
+                            "future_trajectory":    [[fpx, fpy] for fpx, fpy in future_trajectory],
+                        }
+                        events.append(event)
+                        print("SHOT EVENT:", event)
 
                 post_contact_points = []
                 contact_frames = []
@@ -874,7 +889,7 @@ while True:
 
             cv2.putText(
                 frame,
-                f"Angle: {shot_angle:.1f}",
+                f"Angle: {geo_angle:.1f}" if geo_angle is not None else "Angle: --",
                 (20, 120),
                 cv2.FONT_HERSHEY_SIMPLEX,
                 0.9,
