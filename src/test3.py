@@ -775,17 +775,13 @@ while True:
                         print(f"[F{frame_idx}] geometry -> {shot_name} "
                               f"geo_angle={geo_angle:.1f}  "
                               f"EfficientNet={clf_name} ({reason} — ignored)")
-                elif clf_name and clf_conf >= 85.0:
-                    # No trajectory: EfficientNet only (threshold 85% to reduce noise)
-                    shot_name = clf_name
-                    geo_angle = -1.0  # sentinel: no geometry
-                    print(f"[F{frame_idx}] EfficientNet (no traj) -> {shot_name} "
-                          f"({clf_conf:.1f}%)")
                 else:
-                    # Neither — skip this event
-                    print(f"[F{frame_idx}] Skip — no trajectory "
-                          f"({len(unique_points)} pts) and EfficientNet "
-                          f"{'not loaded' if shot_classifier is None else f'{clf_conf:.1f}% < 85'}")
+                    # No trajectory = no reliable event — skip entirely.
+                    # EfficientNet without ball trajectory generates too many
+                    # false positives (model sees batsman stance between
+                    # deliveries and calls it a shot).
+                    print(f"[F{frame_idx}] Skip — no ball trajectory "
+                          f"({len(unique_points)} pts)")
                     shot_name = None
 
                 if shot_name is not None and cp is not None:

@@ -1,22 +1,5 @@
 [
     {
-        "ball_id": 1,
-        "delivery_id": 0,
-        "event": "ball_bat_contact",
-        "frame": 36,
-        "timestamp_sec": 1.2,
-        "wagon_wheel_angle": null,
-        "shot_name": "Flick",
-        "classifier_confidence": 85.28,
-        "predicted_distance_m": 0,
-        "has_trajectory": false,
-        "contact_point": {
-            "x": 1050,
-            "y": 505
-        },
-        "future_trajectory": []
-    },
-    {
         "ball_id": 2,
         "delivery_id": 0,
         "event": "ball_bat_contact",
@@ -651,91 +634,6 @@
         ]
     },
     {
-        "ball_id": 21,
-        "delivery_id": 2,
-        "event": "ball_bat_contact",
-        "frame": 2852,
-        "timestamp_sec": 95.16,
-        "wagon_wheel_angle": null,
-        "shot_name": "Lofted Drive",
-        "classifier_confidence": 99.54,
-        "predicted_distance_m": 0,
-        "has_trajectory": false,
-        "contact_point": {
-            "x": 1170,
-            "y": 444
-        },
-        "future_trajectory": []
-    },
-    {
-        "ball_id": 24,
-        "delivery_id": 2,
-        "event": "ball_bat_contact",
-        "frame": 3282,
-        "timestamp_sec": 109.51,
-        "wagon_wheel_angle": null,
-        "shot_name": "Hook Shot",
-        "classifier_confidence": 85.36,
-        "predicted_distance_m": 0,
-        "has_trajectory": false,
-        "contact_point": {
-            "x": 634,
-            "y": 140
-        },
-        "future_trajectory": []
-    },
-    {
-        "ball_id": 25,
-        "delivery_id": 3,
-        "event": "ball_bat_contact",
-        "frame": 3373,
-        "timestamp_sec": 112.55,
-        "wagon_wheel_angle": null,
-        "shot_name": "Lofted Drive",
-        "classifier_confidence": 99.99,
-        "predicted_distance_m": 0,
-        "has_trajectory": false,
-        "contact_point": {
-            "x": 918,
-            "y": 229
-        },
-        "future_trajectory": []
-    },
-    {
-        "ball_id": 27,
-        "delivery_id": 4,
-        "event": "ball_bat_contact",
-        "frame": 4493,
-        "timestamp_sec": 149.92,
-        "wagon_wheel_angle": null,
-        "shot_name": "Hook Shot",
-        "classifier_confidence": 91.95,
-        "predicted_distance_m": 0,
-        "has_trajectory": false,
-        "contact_point": {
-            "x": 1052,
-            "y": 441
-        },
-        "future_trajectory": []
-    },
-    {
-        "ball_id": 27,
-        "delivery_id": 4,
-        "event": "ball_bat_contact",
-        "frame": 4710,
-        "timestamp_sec": 157.16,
-        "wagon_wheel_angle": null,
-        "shot_name": "Lofted Drive",
-        "classifier_confidence": 99.96,
-        "predicted_distance_m": 0,
-        "has_trajectory": false,
-        "contact_point": {
-            "x": 537,
-            "y": 528
-        },
-        "future_trajectory": []
-    },
-    {
         "ball_id": 34,
         "delivery_id": 5,
         "event": "ball_bat_contact",
@@ -914,74 +812,6 @@
         ]
     },
     {
-        "ball_id": 37,
-        "delivery_id": 6,
-        "event": "ball_bat_contact",
-        "frame": 5037,
-        "timestamp_sec": 168.07,
-        "wagon_wheel_angle": null,
-        "shot_name": "Lofted Drive",
-        "classifier_confidence": 99.89,
-        "predicted_distance_m": 0,
-        "has_trajectory": false,
-        "contact_point": {
-            "x": 522,
-            "y": 484
-        },
-        "future_trajectory": []
-    },
-    {
-        "ball_id": 37,
-        "delivery_id": 6,
-        "event": "ball_bat_contact",
-        "frame": 5129,
-        "timestamp_sec": 171.14,
-        "wagon_wheel_angle": null,
-        "shot_name": "Lofted Drive",
-        "classifier_confidence": 90.78,
-        "predicted_distance_m": 0,
-        "has_trajectory": false,
-        "contact_point": {
-            "x": 963,
-            "y": 161
-        },
-        "future_trajectory": []
-    },
-    {
-        "ball_id": 37,
-        "delivery_id": 6,
-        "event": "ball_bat_contact",
-        "frame": 5220,
-        "timestamp_sec": 174.17,
-        "wagon_wheel_angle": null,
-        "shot_name": "Flick",
-        "classifier_confidence": 89.52,
-        "predicted_distance_m": 0,
-        "has_trajectory": false,
-        "contact_point": {
-            "x": 429,
-            "y": 67
-        },
-        "future_trajectory": []
-    },
-    {
-        "ball_id": 44,
-        "delivery_id": 6,
-        "event": "ball_bat_contact",
-        "frame": 5986,
-        "timestamp_sec": 199.73,
-        "wagon_wheel_angle": null,
-        "shot_name": "Late Cut",
-        "classifier_confidence": 99.98,
-        "predicted_distance_m": 0,
-        "has_trajectory": false,
-        "contact_point": {
-            "x": 1062,
-            "y": 643
-        },
-        "future_trajectory": []
-    },
-    {
         "ball_id": 59,
         "delivery_id": 7,
         "event": "ball_bat_contact",
@@ -1114,56 +944,5 @@
                 28
             ]
         ]
-    },
-    {
-        "ball_id": 62,
-        "delivery_id": 8,
-        "event": "ball_bat_contact",
-        "frame": 6626,
-        "timestamp_sec": 221.09,
-        "wagon_wheel_angle": null,
-        "shot_name": "Lofted Drive",
-        "classifier_confidence": 99.65,
-        "predicted_distance_m": 0,
-        "has_trajectory": false,
-        "contact_point": {
-            "x": 1429,
-            "y": 637
-        },
-        "future_trajectory": []
-    },
-    {
-        "ball_id": 69,
-        "delivery_id": 8,
-        "event": "ball_bat_contact",
-        "frame": 6885,
-        "timestamp_sec": 229.73,
-        "wagon_wheel_angle": null,
-        "shot_name": "Flick",
-        "classifier_confidence": 99.99,
-        "predicted_distance_m": 0,
-        "has_trajectory": false,
-        "contact_point": {
-            "x": 1822,
-            "y": 468
-        },
-        "future_trajectory": []
-    },
-    {
-        "ball_id": 70,
-        "delivery_id": 9,
-        "event": "ball_bat_contact",
-        "frame": 7097,
-        "timestamp_sec": 236.8,
-        "wagon_wheel_angle": null,
-        "shot_name": "Pull Shot",
-        "classifier_confidence": 99.17,
-        "predicted_distance_m": 0,
-        "has_trajectory": false,
-        "contact_point": {
-            "x": 1775,
-            "y": 814
-        },
-        "future_trajectory": []
     }
 ]
