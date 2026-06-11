@@ -129,6 +129,7 @@ if not out.isOpened():
 # =========================================================
 
 events = []
+saved_deliveries = set()   # delivery_ids that already have a saved event
 
 ball_id    = 0
 delivery_id = 0      # increments each time ball appears at bowler's end
@@ -790,7 +791,14 @@ while True:
                         evt.get("ball_id") == ball_id
                         for evt in events
                     )
+                    # NOTE: deliberately NOT enforcing one-event-per-delivery.
+                    # Delivery segmentation sometimes merges two balls into one
+                    # delivery_id (esp. at clip start where everything is
+                    # delivery 0), so one-per-delivery would drop real shots.
+                    # Over-capture (visible false positive) beats under-capture
+                    # (lost real shot). Improve segmentation, not this gate.
                     if not already_saved:
+                        saved_deliveries.add(delivery_id)
                         event = {
                             "ball_id":              ball_id,
                             "delivery_id":          delivery_id,
