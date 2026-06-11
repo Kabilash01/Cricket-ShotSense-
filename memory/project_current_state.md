@@ -46,10 +46,20 @@ CONTACT_COOLDOWN_FRAMES  = 90
 INTERP_MAX_GAP           = 3
 ```
 
-**Validated results on test_clip2.mp4 (19:50–24:00, 4 min)**:
-- 6 events saved: Flick, Straight Drive, Lofted Drive×2, Late Cut, Straight Drive
-- No stale future_trajectory bug
-- No OOM (frame_buffer stores 224×224 resized frames)
+**Validated results on test_clip2.mp4 (19:50–24:00, 4 min, 6 real balls)**:
+- 7 trajectory-backed events saved (1 false positive vs 6 ground-truth balls)
+- All events require real ball trajectory — EfficientNet-only saves were
+  removed because they false-fire on batsman stance between deliveries
+- Events: Flick, Edge, Leg Glance, Pull Shot, Lofted Drive, Late Cut, Edge
+- No stale future_trajectory bug, no OOM, no stuck ball_id
+
+**Event-count tuning decision (2026-06-03)**:
+- Tested one-event-per-delivery → gave 5 (dropped a real Lofted Drive that
+  shared delivery_id=2). Reverted: over-capture beats under-capture.
+- Root cause of the extra event: delivery segmentation merges balls into one
+  delivery_id, esp. at clip start (everything before first detected delivery
+  is delivery_id=0). The real fix is better segmentation, needs cleaner
+  full-delivery footage to tune — do NOT re-add the one-per-delivery gate.
 
 **Known remaining issues**:
 - Ball detection still sparse (~10% hit rate) — limits post-contact trajectory quality
