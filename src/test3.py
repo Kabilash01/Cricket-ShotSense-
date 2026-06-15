@@ -54,8 +54,8 @@ POSE_BAT_MIN_Y_FRAC = 0.40   # bat box centre-y must be > 40% down the frame
 # practice swings; was 40, raised to 90 ≈ 3 s at 30 fps)
 CONTACT_COOLDOWN_FRAMES = 90
 
-OUTPUT_VIDEO = "output_analysis.mp4"
-EVENTS_JSON = "events.json"
+OUTPUT_VIDEO = os.environ.get("OUTPUT_VIDEO", "output_analysis.mp4")
+EVENTS_JSON = os.environ.get("EVENTS_JSON", "events.json")
 
 METERS_PER_PIXEL = 18.5 / 520
 

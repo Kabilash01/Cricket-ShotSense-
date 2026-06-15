@@ -1,0 +1,173 @@
+[
+    {
+        "ball_id": 3,
+        "delivery_id": 0,
+        "event": "ball_bat_contact",
+        "frame": 511,
+        "timestamp_sec": 17.05,
+        "wagon_wheel_angle": 267.55,
+        "shot_name": "Pull Shot",
+        "classifier_confidence": 79.38,
+        "predicted_distance_m": 5.34,
+        "has_trajectory": true,
+        "contact_point": {
+            "x": 861,
+            "y": 617
+        },
+        "future_trajectory": [
+            [
+                791,
+                595
+            ],
+            [
+                797,
+                592
+            ],
+            [
+                803,
+                591
+            ],
+            [
+                810,
+                590
+            ],
+            [
+                816,
+                591
+            ],
+            [
+                823,
+                593
+            ],
+            [
+                829,
+                596
+            ],
+            [
+                835,
+                600
+            ],
+            [
+                842,
+                605
+            ],
+            [
+                848,
+                611
+            ],
+            [
+                855,
+                618
+            ],
+            [
+                861,
+                626
+            ],
+            [
+                867,
+                635
+            ],
+            [
+                874,
+                645
+            ],
+            [
+                880,
+                657
+            ],
+            [
+                887,
+                669
+            ],
+            [
+                893,
+                683
+            ],
+            [
+                899,
+                697
+            ],
+            [
+                906,
+                713
+            ],
+            [
+                912,
+                730
+            ],
+            [
+                919,
+                747
+            ],
+            [
+                925,
+                766
+            ],
+            [
+                932,
+                786
+            ],
+            [
+                938,
+                807
+            ],
+            [
+                944,
+                829
+            ],
+            [
+                951,
+                852
+            ],
+            [
+                957,
+                876
+            ],
+            [
+                964,
+                902
+            ],
+            [
+                970,
+                928
+            ],
+            [
+                976,
+                955
+            ],
+            [
+                983,
+                984
+            ],
+            [
+                989,
+                1013
+            ],
+            [
+                996,
+                1044
+            ],
+            [
+                1002,
+                1075
+            ]
+        ]
+    },
+    {
+        "ball_id": 18,
+        "delivery_id": 3,
+        "event": "ball_bat_contact",
+        "frame": 1457,
+        "timestamp_sec": 48.62,
+        "wagon_wheel_angle": 186.38,
+        "shot_name": "Edge",
+        "classifier_confidence": 68.27,
+        "predicted_distance_m": 6.41,
+        "has_trajectory": true,
+        "contact_point": {
+            "x": 882,
+            "y": 337
+        },
+        "future_trajectory": []
+    }
+]
