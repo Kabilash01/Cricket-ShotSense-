@@ -84,8 +84,19 @@ INTERP_MAX_GAP           = 3
 - Ball detection still sparse (~10% hit rate) — limits post-contact trajectory quality
 - EfficientNet at 100% sometimes disagrees with geometry angle (misfires on follow-through frames)
 - delivery_id over-segments on replays (see above) — needs scene-cut detection, not gap tuning
-- Committed events_clip1/2/3.json are from the OLD spatial segmentation — regenerate to refresh
 - Bowler may still get pose box occasionally if bat detector fires on the ball in his hand
+
+**Analysis artifacts for the paper (added 2026-07-29)**:
+- events_clip1/2/3.json REGENERATED with gap-based segmentation (clip1→test_clip.mp4=1
+  event, clip2→test_clip2.mp4=7, clip3→test_clip3.mp4=9441f=7; n=15 total; clip1 dropped
+  from 2→1 due to new tracker-reset timing).
+- `docs/directional_results.md` — circular stats (mean dir 238°, Rayleigh p=0.039 +
+  Watson U² p=0.050 marginally sig; Rao/Kuiper not; leg-side tendency, weak at n=15).
+- `docs/system_performance.md` — runtime profile (ball detector is the 17-FPS bottleneck)
+  + descriptive analytics. Figures + JSON in `docs/figures/`.
+- `scripts/eval_events.py` + `docs/eval/` — precision/recall scaffold; NEEDS human
+  ground-truth labels (not yet done — the one remaining gap for a publishable evaluation).
+- test3.py has PROFILE env (default on) writing runtime_profile.json each run.
 
 **Why**: User wants reliable per-delivery event extraction for analytics (`events.json`).
 

@@ -49,16 +49,16 @@ stacked bar; the ball detector alone exceeds the 30 FPS budget (dashed line).
 **(b)** per-stage throughput; only the ball detector and the end-to-end pipeline
 fall below 30 FPS.
 
-## 2. Descriptive analytics of detected shots (n = 16)
+## 2. Descriptive analytics of detected shots (n = 15)
 
-- **Carry distance:** mean 7.85 m, median 7.13 m (SD 4.23), range 2.5–19.7 m;
-  14 ground / 2 aerial (split at 12 m). The lone Lofted Drive (19.7 m) is the
-  clear aerial outlier.
-- **Shot repertoire:** 8 distinct shot types over 16 events; Flick most frequent
-  (25%). Shannon entropy **2.78 of 3.00 bits (evenness 0.93)** — a very even,
+- **Carry distance:** mean 8.22 m, median 7.26 m (SD 4.63), range 2.5–19.7 m;
+  12 ground / 3 aerial (split at 12 m). The Lofted Drive (19.7 m) is the clear
+  aerial outlier.
+- **Shot repertoire:** 7 distinct shot types over 15 events; Flick most frequent
+  (26.7%). Shannon entropy **2.61 of 2.81 bits (evenness 0.93)** — a very even,
   varied stroke distribution rather than one or two dominant shots.
-- **Classifier confidence:** median 96.2%, but bimodal — 44% of events at ≥97%
-  (the EfficientNet-override band) and 25% below 70%. On `test_clip2` the CNN
+- **Classifier confidence:** median 96.5%, but bimodal — 40% of events at ≥97%
+  (the EfficientNet-override band) and 20% below 70%. On `test_clip2` the CNN
   overrode the geometry angle on **2 of 7** classified contacts (28.6%).
 
 ![Descriptive analytics](figures/descriptive_analytics.png)
@@ -78,7 +78,7 @@ also needs **whether the output is correct**. The scaffolding is in place:
   accuracy.
 - `docs/eval/ground_truth_template.csv` — label one row per real bat-contact per
   clip.
-- `docs/eval/detections_reference.csv` — the 16 system detections listed for
+- `docs/eval/detections_reference.csv` — the 15 system detections listed for
   cross-checking (do not copy — label independently).
 
 Run once labelled:

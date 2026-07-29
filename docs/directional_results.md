@@ -1,7 +1,8 @@
 # Directional (Circular) Analysis of Detected Shots
 
-*Generated 2026-07-29 from `events_clip1/2/3.json` (n = 16 bat-contact events with a
-valid ball trajectory). Reproduce with `scratchpad/directional_analysis.py` (basic) and
+*Generated 2026-07-29 from `events_clip1/2/3.json` (n = 15 bat-contact events with a
+valid ball trajectory, regenerated with the gap-based delivery segmentation).
+Reproduce with `scratchpad/directional_analysis.py` (basic) and
 `scratchpad/directional_extended.py` (extended). Machine-readable outputs:
 `docs/figures/directional_stats.json`, `docs/figures/directional_stats_extended.json`.*
 
@@ -34,59 +35,59 @@ invalid (they cannot wrap around 360°). We use circular statistics (Mardia & Ju
 - **95% confidence intervals** for θ̄ and R̄ from 10 000 nonparametric bootstrap
   resamples.
 
-## 2. Location and concentration (pooled, n = 16)
+## 2. Location and concentration (pooled, n = 15)
 
 | Quantity | Value | 95% CI |
 | --- | --- | --- |
-| Mean direction θ̄ | 229.0° | [175.0°, 268.5°] (bootstrap) |
-| Mean resultant R̄ | 0.434 | [0.231, 0.707] (bootstrap) |
-| von Mises κ (MLE) | 0.964 | — |
-| Circular variance V | 0.566 | — |
-| Circular SD s | 74.0° | — |
-| Angular deviation s₀ | 60.9° | — |
+| Mean direction θ̄ | 237.6° | [183.0°, 274.3°] (bootstrap) |
+| Mean resultant R̄ | 0.460 | [0.226, 0.746] (bootstrap) |
+| von Mises κ (MLE) | 0.904 | — |
+| Circular variance V | 0.540 | — |
+| Circular SD s | 71.4° | — |
+| Angular deviation s₀ | 59.6° | — |
 
-The mean direction points to **229° — the leg-side / square-leg region**. However κ ≈ 1
-and the wide bootstrap CI (spanning ~94°) show the directions are **only moderately
-concentrated**, as expected for n = 16.
+The mean direction points to **238° — the leg-side / square-leg region**. However κ ≈ 0.9
+and the wide bootstrap CI (spanning ~91°) show the directions are **only moderately
+concentrated**, as expected for n = 15.
 
 ## 3. Tests of uniformity
 
 | Test | Statistic | p (Monte-Carlo) | Rejects H₀ at 0.05? |
 | --- | --- | --- | --- |
-| Rayleigh | Z = 3.019 | 0.048 | marginally yes |
-| Rao's spacing | U = 147.0 | 0.191 | no |
-| Kuiper | V = 1.663 | 0.077 | no |
-| Watson U² | 0.178 | 0.059 | no |
+| Rayleigh | Z = 3.169 | 0.039 | yes (marginal) |
+| Watson U² | 0.187 | 0.050 | yes (borderline) |
+| Kuiper | V = 1.672 | 0.074 | no |
+| Rao's spacing | U = 150.6 | 0.155 | no |
 
-*(Rayleigh analytic p = 0.046, agreeing with its Monte-Carlo value.)*
+*(Rayleigh analytic p = 0.039, agreeing with its Monte-Carlo value.)*
 
 **Interpretation — report this honestly.** The evidence for a preferred scoring
-direction is **suggestive but not robust**. The Rayleigh test — which is the most
-powerful test when the alternative is a single dominant direction — is *marginally*
-significant (p ≈ 0.048), consistent with the visible leg-side concentration. But the
-three more general tests do **not** reject uniformity at α = 0.05 (Kuiper and Watson U²
-sit just above threshold; Rao's spacing is clearly non-significant). At n = 16 this is
-the expected signature of a **weak, unimodal trend rather than a strong bias**. The
-finding should be stated as *a leg-side tendency detectable by the Rayleigh test, not
-yet corroborated by omnibus tests at this sample size.*
+direction is **present but weak**. The Rayleigh test — most powerful when the alternative
+is a single dominant direction — is significant (p = 0.039), and the omnibus Watson U²
+test sits right on the threshold (p = 0.050); both point to the visible leg-side
+concentration. The two remaining tests (Kuiper, Rao's spacing) do **not** reject
+uniformity. This split is the expected signature of a **genuine but modest unimodal
+trend** at small n. State the finding as *a leg-side directional bias detected by the
+Rayleigh and Watson tests, at the edge of significance and not yet corroborated by all
+omnibus tests at this sample size.*
 
 ## 4. Modality, correlation, and field-zone results
 
-- **Bimodality (axial test):** principal axis 104.9°/284.9°, axial R̄ = 0.246,
-  p = 0.390 → **no significant two-lobed structure**; the distribution is best described
+- **Bimodality (axial test):** principal axis 97.1°/277.1°, axial R̄ = 0.267,
+  p = 0.348 → **no significant two-lobed structure**; the distribution is best described
   as a single weak mode, not off-side-vs-leg-side symmetry.
-- **Direction vs carry distance:** Mardia r_xl = 0.473, permutation p = 0.186 →
+- **Direction vs carry distance:** Mardia r_xl = 0.470, permutation p = 0.219 →
   **no significant association** between where a shot is played and how far it carries.
-- **Field-zone tally:** Leg side 10 (62.5%), off side 3 (18.8%), behind point/edge 3
-  (18.8%), straight 0. A binomial test of the leg-side share against 0.5 is **not
-  significant** (p = 0.227) — again, a tendency rather than a proven bias.
+- **Field-zone tally:** Leg side 10 (66.7%), behind point/edge 3 (20.0%), off side 2
+  (13.3%), straight 0. A binomial test of the leg-side share against 0.5 is **not
+  significant** (p = 0.151) — a tendency rather than a proven bias on its own.
 
 ## 5. Inter-clip comparison
 
-Watson–Williams F(2, 13) = 2.55, p = 0.116 (pooled κ = 1.38 > 1, so the test's
+Watson–Williams F(2, 12) = 2.34, p = 0.138 (pooled κ = 1.36 > 1, so the test's
 assumptions hold). The three clips do **not** differ significantly in mean direction
-(Clip 1: 227°, Clip 2: 183°, Clip 3: 271°), which **justifies pooling** them for the
-analyses above.
+(Clip 1: 268°, n = 1; Clip 2: 193°; Clip 3: 271°), which **justifies pooling** them for
+the analyses above.
 
 ## 6. Per-shot summary
 
@@ -94,10 +95,9 @@ analyses above.
 | --- | --- | --- | --- |
 | Flick | 4 | 272.7° | 5.9 m |
 | Pull Shot | 3 | 268.8° | 8.4 m |
-| Edge | 3 | 169.9° | 8.0 m |
+| Edge | 3 | 170.8° | 10.6 m |
 | Leg Glance | 2 | 217.8° | 6.6 m |
 | Lofted Drive | 1 | 94.3° | 19.7 m |
-| Late Cut | 1 | 148.4° | 10.1 m |
 | On Drive | 1 | 322.0° | 2.5 m |
 | Square Cut | 1 | 97.5° | 7.3 m |
 
@@ -107,15 +107,15 @@ longest carry (19.7 m), as expected for an aerial stroke.
 
 ## 7. Conclusion for the paper
 
-Across 16 automatically detected shots the batsmen show a **leg-side directional
-tendency** (mean direction 229°, Rayleigh p ≈ 0.048), but this is **not yet corroborated
-by omnibus uniformity tests, the leg-side proportion test, or a narrow confidence
-interval**, all of which are limited by the small automatically-extracted sample. There
-is no significant multimodality, no direction–distance coupling, and no inter-clip
-difference in mean direction. The result is best presented as a **demonstration that the
-pipeline supports quantitative circular analysis of batting direction**, with the
-directional bias itself flagged as preliminary pending a larger, manually verified event
-set.
+Across 15 automatically detected shots the batsmen show a **leg-side directional bias**
+(mean direction 238°, significant on the Rayleigh test p = 0.039 and borderline on
+Watson U² p = 0.050), but it is **not corroborated by the Kuiper or Rao tests, nor by the
+leg-side proportion test, and the confidence interval is wide** — all consequences of the
+small automatically-extracted sample. There is no significant multimodality, no
+direction–distance coupling, and no inter-clip difference in mean direction. The result
+is best presented as a **demonstration that the pipeline supports quantitative circular
+analysis of batting direction**, with the directional bias itself flagged as preliminary
+pending a larger, manually verified event set.
 
 *Caveat: events were extracted automatically and inherit the pipeline's known
 limitations (sparse ball detection ~9%, occasional follow-through/replay mis-fires). The
@@ -126,14 +126,14 @@ of the delivery-segmentation logic.*
 
 ![Basic directional analysis](figures/wagon_wheel_directional.png)
 
-**Fig. X.** Wagon-wheel directional analysis of the n = 16 detected shots. **(a)** shot
+**Fig. X.** Wagon-wheel directional analysis of the n = 15 detected shots. **(a)** shot
 direction (angle) vs predicted carry distance (radius, m), coloured by clip; **(b)**
 12-bin circular histogram with the mean-direction arrow (length ∝ R̄).
 
 ![Extended directional analysis](figures/directional_extended.png)
 
-**Fig. Y.** **(a)** Fitted von Mises distribution (κ = 0.96) over the observed histogram,
-with the mean direction (229°) and its 95% CI wedge — the near-circular density curve
+**Fig. Y.** **(a)** Fitted von Mises distribution (κ = 0.90) over the observed histogram,
+with the mean direction (238°) and its 95% CI wedge — the near-circular density curve
 reflects the low concentration. **(b)** Per-clip mean-direction vectors and individual
-shots; the Watson–Williams test (F = 2.55, p = 0.116) finds no significant difference,
+shots; the Watson–Williams test (F = 2.34, p = 0.138) finds no significant difference,
 justifying pooling.

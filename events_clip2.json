@@ -1,7 +1,7 @@
 [
     {
         "ball_id": 2,
-        "delivery_id": 0,
+        "delivery_id": 2,
         "event": "ball_bat_contact",
         "frame": 136,
         "timestamp_sec": 4.54,
@@ -179,7 +179,7 @@
     },
     {
         "ball_id": 7,
-        "delivery_id": 0,
+        "delivery_id": 3,
         "event": "ball_bat_contact",
         "frame": 294,
         "timestamp_sec": 9.81,
@@ -357,7 +357,7 @@
     },
     {
         "ball_id": 8,
-        "delivery_id": 1,
+        "delivery_id": 4,
         "event": "ball_bat_contact",
         "frame": 539,
         "timestamp_sec": 17.98,
@@ -454,8 +454,8 @@
         ]
     },
     {
-        "ball_id": 11,
-        "delivery_id": 2,
+        "ball_id": 12,
+        "delivery_id": 7,
         "event": "ball_bat_contact",
         "frame": 939,
         "timestamp_sec": 31.33,
@@ -600,8 +600,8 @@
         ]
     },
     {
-        "ball_id": 13,
-        "delivery_id": 2,
+        "ball_id": 14,
+        "delivery_id": 7,
         "event": "ball_bat_contact",
         "frame": 1045,
         "timestamp_sec": 34.87,
@@ -634,186 +634,74 @@
         ]
     },
     {
-        "ball_id": 34,
-        "delivery_id": 5,
+        "ball_id": 39,
+        "delivery_id": 26,
         "event": "ball_bat_contact",
-        "frame": 4826,
-        "timestamp_sec": 161.03,
-        "wagon_wheel_angle": 148.39,
-        "shot_name": "Late Cut",
-        "classifier_confidence": 97.18,
-        "predicted_distance_m": 10.09,
+        "frame": 5249,
+        "timestamp_sec": 175.14,
+        "wagon_wheel_angle": 189.01,
+        "shot_name": "Edge",
+        "classifier_confidence": 96.69,
+        "predicted_distance_m": 14.18,
         "has_trajectory": true,
         "contact_point": {
-            "x": 871,
-            "y": 352
+            "x": 838,
+            "y": 370
         },
         "future_trajectory": [
             [
-                943,
-                451
-            ],
-            [
-                949,
-                454
-            ],
-            [
-                955,
-                457
-            ],
-            [
-                962,
-                459
-            ],
-            [
-                968,
-                461
-            ],
-            [
-                975,
-                463
-            ],
-            [
-                981,
-                464
-            ],
-            [
-                987,
-                465
-            ],
-            [
-                994,
-                465
-            ],
-            [
-                1000,
-                465
-            ],
-            [
-                1007,
-                465
-            ],
-            [
-                1013,
-                465
-            ],
-            [
-                1019,
-                464
-            ],
-            [
-                1026,
-                463
-            ],
-            [
-                1032,
-                461
-            ],
-            [
-                1039,
-                459
-            ],
-            [
-                1045,
-                457
-            ],
-            [
-                1051,
-                454
-            ],
-            [
-                1058,
-                451
-            ],
-            [
-                1064,
-                448
-            ],
-            [
-                1071,
-                445
-            ],
-            [
-                1077,
-                441
-            ],
-            [
-                1084,
-                436
-            ],
-            [
-                1090,
-                432
-            ],
-            [
-                1096,
-                427
-            ],
-            [
-                1103,
-                421
-            ],
-            [
-                1109,
-                416
-            ],
-            [
-                1116,
-                410
-            ],
-            [
-                1122,
+                825,
                 403
             ],
             [
-                1128,
-                396
+                831,
+                381
             ],
             [
-                1135,
-                389
+                837,
+                356
             ],
             [
-                1141,
-                382
+                844,
+                329
             ],
             [
-                1148,
-                374
+                850,
+                300
             ],
             [
-                1154,
-                366
+                857,
+                268
             ],
             [
-                1160,
-                358
+                863,
+                233
             ],
             [
-                1167,
-                349
+                869,
+                196
             ],
             [
-                1173,
-                340
+                876,
+                156
             ],
             [
-                1180,
-                330
+                882,
+                113
             ],
             [
-                1186,
-                320
+                889,
+                68
             ],
             [
-                1193,
-                310
+                895,
+                21
             ]
         ]
     },
     {
-        "ball_id": 59,
-        "delivery_id": 7,
+        "ball_id": 63,
+        "delivery_id": 32,
         "event": "ball_bat_contact",
         "frame": 6455,
         "timestamp_sec": 215.38,

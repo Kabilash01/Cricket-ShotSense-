@@ -1,32 +1,31 @@
 {
-  "n": 16,
+  "n": 15,
   "distance": {
-    "mean": 7.851875,
-    "median": 7.13,
-    "sd": 4.231699766839168,
+    "mean": 8.220666666666668,
+    "median": 7.26,
+    "sd": 4.625442784467337,
     "min": 2.5,
     "max": 19.73,
-    "ground": 14,
-    "aerial": 2
+    "ground": 12,
+    "aerial": 3
   },
   "repertoire": {
     "counts": {
       "Pull Shot": 3,
-      "Edge": 3,
       "Flick": 4,
+      "Edge": 3,
       "Leg Glance": 2,
       "Lofted Drive": 1,
-      "Late Cut": 1,
       "On Drive": 1,
       "Square Cut": 1
     },
-    "entropy_bits": 2.7806390622295662,
-    "max_bits": 3.0,
-    "evenness": 0.9268796874098554
+    "entropy_bits": 2.606238928653389,
+    "max_bits": 2.807354922057604,
+    "evenness": 0.928361037707049
   },
   "confidence": {
-    "mean": 84.89874999999999,
-    "median": 96.175,
-    "ge97": 7
+    "mean": 85.97466666666665,
+    "median": 96.55,
+    "ge97": 6
   }
 }

@@ -1,7 +1,7 @@
 [
     {
         "ball_id": 3,
-        "delivery_id": 0,
+        "delivery_id": 2,
         "event": "ball_bat_contact",
         "frame": 511,
         "timestamp_sec": 17.05,
@@ -152,22 +152,5 @@
                 1075
             ]
         ]
-    },
-    {
-        "ball_id": 18,
-        "delivery_id": 3,
-        "event": "ball_bat_contact",
-        "frame": 1457,
-        "timestamp_sec": 48.62,
-        "wagon_wheel_angle": 186.38,
-        "shot_name": "Edge",
-        "classifier_confidence": 68.27,
-        "predicted_distance_m": 6.41,
-        "has_trajectory": true,
-        "contact_point": {
-            "x": 882,
-            "y": 337
-        },
-        "future_trajectory": []
     }
 ]

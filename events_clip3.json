@@ -1,7 +1,7 @@
 [
     {
-        "ball_id": 10,
-        "delivery_id": 1,
+        "ball_id": 11,
+        "delivery_id": 8,
         "event": "ball_bat_contact",
         "frame": 918,
         "timestamp_sec": 30.63,
@@ -178,8 +178,8 @@
         ]
     },
     {
-        "ball_id": 34,
-        "delivery_id": 2,
+        "ball_id": 38,
+        "delivery_id": 29,
         "event": "ball_bat_contact",
         "frame": 5030,
         "timestamp_sec": 167.83,
@@ -356,8 +356,8 @@
         ]
     },
     {
-        "ball_id": 40,
-        "delivery_id": 2,
+        "ball_id": 48,
+        "delivery_id": 33,
         "event": "ball_bat_contact",
         "frame": 5888,
         "timestamp_sec": 196.46,
@@ -534,8 +534,8 @@
         ]
     },
     {
-        "ball_id": 41,
-        "delivery_id": 2,
+        "ball_id": 49,
+        "delivery_id": 33,
         "event": "ball_bat_contact",
         "frame": 5979,
         "timestamp_sec": 199.5,
@@ -712,8 +712,8 @@
         ]
     },
     {
-        "ball_id": 54,
-        "delivery_id": 3,
+        "ball_id": 61,
+        "delivery_id": 38,
         "event": "ball_bat_contact",
         "frame": 7773,
         "timestamp_sec": 259.36,
@@ -890,8 +890,8 @@
         ]
     },
     {
-        "ball_id": 60,
-        "delivery_id": 4,
+        "ball_id": 67,
+        "delivery_id": 43,
         "event": "ball_bat_contact",
         "frame": 9017,
         "timestamp_sec": 300.87,
@@ -1068,8 +1068,8 @@
         ]
     },
     {
-        "ball_id": 65,
-        "delivery_id": 4,
+        "ball_id": 72,
+        "delivery_id": 43,
         "event": "ball_bat_contact",
         "frame": 9108,
         "timestamp_sec": 303.9,
