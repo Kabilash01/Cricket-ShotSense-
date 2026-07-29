@@ -61,10 +61,30 @@ INTERP_MAX_GAP           = 3
   is delivery_id=0). The real fix is better segmentation, needs cleaner
   full-delivery footage to tune — do NOT re-add the one-per-delivery gate.
 
+**Delivery segmentation — gap-based (updated 2026-07-29)**:
+- `test3.py` now increments `delivery_id` when the ball reappears after being
+  absent ≥ `DELIVERY_GAP_FRAMES` (default 45, env-tunable). Replaced the old
+  top-of-frame release heuristic, which needed the ball caught at release (rare
+  at ~9% hit rate) and merged real deliveries into a `delivery 0` catch-all.
+- Validated on test_clip2: same 7 events, but F136/F294 (two separate balls,
+  ~5s apart) now split into d2/d3 instead of both collapsing to delivery 0.
+  F939/F1045 stay one delivery (ball tracked continuously, gap never hit 45).
+- **Replay ceiling (the real remaining limit)**: broadcast replays + camera cuts
+  of the same ball each create a separate ball-activity burst, so delivery_id
+  counts ~36 bursts on a 6-ball clip, not 6 umpire-deliveries. Phantom bursts
+  stay event-free (event save still requires a real >4-pt trajectory), so it's
+  cosmetic. Diagnostic: no clean bimodal gap exists between intra- vs inter-
+  delivery — inter-detection gaps form a continuous spread. Lifting this ceiling
+  to true per-ball counts needs **scene-cut detection** (frame-diff/histogram),
+  not more gap tuning. Diagnostic script: scratchpad `ball_gaps.py`.
+- Do NOT re-add the one-event-per-delivery gate (see below) — over-capture still
+  beats under-capture.
+
 **Known remaining issues**:
 - Ball detection still sparse (~10% hit rate) — limits post-contact trajectory quality
 - EfficientNet at 100% sometimes disagrees with geometry angle (misfires on follow-through frames)
-- Delivery segmentation not implemented — ball_id increments per detection, not per delivery
+- delivery_id over-segments on replays (see above) — needs scene-cut detection, not gap tuning
+- Committed events_clip1/2/3.json are from the OLD spatial segmentation — regenerate to refresh
 - Bowler may still get pose box occasionally if bat detector fires on the ball in his hand
 
 **Why**: User wants reliable per-delivery event extraction for analytics (`events.json`).
@@ -72,4 +92,5 @@ INTERP_MAX_GAP           = 3
 **How to apply**:
 - Always re-read `src/test3.py` before quoting line numbers — file changes rapidly
 - Don't re-implement things already in `shot_analyzer.py` — port from there if needed
-- Next priority: delivery segmentation, then EfficientNet reliability improvement
+- Next priority: scene-cut detection (to lift the delivery-segmentation replay
+  ceiling), then EfficientNet reliability improvement

@@ -54,6 +54,18 @@ POSE_BAT_MIN_Y_FRAC = 0.40   # bat box centre-y must be > 40% down the frame
 # practice swings; was 40, raised to 90 ≈ 3 s at 30 fps)
 CONTACT_COOLDOWN_FRAMES = 90
 
+# Delivery segmentation: the ball reappearing after being absent this many
+# frames marks a new delivery. Ball-detection gaps *within* one delivery's
+# flight are short (the ball is on-screen during release→bounce→bat); the
+# multi-second lull while the bowler walks back and resets is the separator.
+# This replaces the old top-of-frame release heuristic, which needed the ball
+# caught at the release point — rare at ~9% detection hit rate, so it merged
+# real deliveries. Diagnostic on test_clip2 confirms intra-flight gaps stay
+# well under 45 frames. NOTE: broadcast replays/camera-cuts of the same ball
+# create extra ball-activity bursts, so delivery_id segments ball activity, not
+# strictly umpire-counted balls — that ceiling needs scene-cut detection to lift.
+DELIVERY_GAP_FRAMES = int(os.environ.get("DELIVERY_GAP_FRAMES", "45"))
+
 OUTPUT_VIDEO = os.environ.get("OUTPUT_VIDEO", "output_analysis.mp4")
 EVENTS_JSON = os.environ.get("EVENTS_JSON", "events.json")
 
@@ -139,6 +151,11 @@ frame_idx = 0
 fps_frames = 0
 fps_time = time.time()
 display_fps = 0
+
+# Per-stage runtime profiling. Timers are always collected (negligible cost);
+# a summary is printed at exit. Set PROFILE=0 to silence the summary.
+PROFILE = os.environ.get("PROFILE", "1") == "1"
+perf = {"ball": [], "bat": [], "pose": [], "clf": [], "frame": []}
 
 # =========================================================
 # TRAJECTORY
@@ -361,6 +378,7 @@ while True:
         break
 
     frame_idx += 1
+    _frame_t0 = time.perf_counter()
     frame_buffer.append(cv2.resize(frame, CLF_SIZE))
 
     # =====================================================
@@ -387,16 +405,20 @@ while True:
         else None
     )
 
+    _t0 = time.perf_counter()
     detections = ball_detector.detect(
         frame,
         predicted
     )
+    perf["ball"].append(time.perf_counter() - _t0)
 
     # =====================================================
     # BAT DETECTION
     # =====================================================
 
+    _t0 = time.perf_counter()
     bat_detections = bat_detector.detect(frame)
+    perf["bat"].append(time.perf_counter() - _t0)
 
     pose_bat_box = None   # high-conf bat box for batsman selection
     if bat_detections:
@@ -428,7 +450,9 @@ while True:
     # POSE DETECTION (batsman wrists → contact trigger)
     # =====================================================
 
+    _t0 = time.perf_counter()
     pose_dets = pose_detector.detect(frame)
+    perf["pose"].append(time.perf_counter() - _t0)
     batsman = PoseDetector.pick_batsman(
         pose_dets,
         prev_bbox=prev_batsman_bbox,
@@ -476,27 +500,31 @@ while True:
         )
 
     # =====================================================
-    # DELIVERY SEGMENTATION
-    # Ball appearing in the top 35% of frame after ≥30 missed frames
-    # = bowler releasing a new delivery. Reset overlays + increment delivery_id.
+    # DELIVERY SEGMENTATION (gap-based)
+    # A delivery boundary is the multi-second lull between balls: the ball
+    # reappearing after being absent >= DELIVERY_GAP_FRAMES starts a new
+    # delivery. Robust to sparse detection — unlike the old top-of-frame release
+    # heuristic, which needed the ball caught at release (rare at ~9% hit rate)
+    # and therefore merged real deliveries into one delivery_id.
+    # `frames_since_ball` here still holds the pre-frame absence count because
+    # the tracker-update block below is what resets it to 0.
     # =====================================================
 
-    if detections and tracker.missed_frames >= 30:
-        cx0, cy0, *_ = detections[0]
-        if cy0 < height * 0.35:
-            delivery_id       += 1
-            shot_name          = None
-            shot_angle         = None
-            geo_angle          = None
-            predicted_distance = 0
-            future_trajectory  = []
-            last_ball_pos      = None
-            last_ball_frame    = -999
-            wrist_trigger.reset()
-            tracker.reset()             # force fresh ball_id on new delivery
-            trajectory_history.clear()
-            speed_history.clear()
-            print(f"[F{frame_idx}] 🏏 NEW DELIVERY #{delivery_id}")
+    if detections and frames_since_ball >= DELIVERY_GAP_FRAMES:
+        delivery_id       += 1
+        shot_name          = None
+        shot_angle         = None
+        geo_angle          = None
+        predicted_distance = 0
+        future_trajectory  = []
+        last_ball_pos      = None
+        last_ball_frame    = -999
+        wrist_trigger.reset()
+        tracker.reset()             # force fresh ball_id on new delivery
+        trajectory_history.clear()
+        speed_history.clear()
+        print(f"[F{frame_idx}] 🏏 NEW DELIVERY #{delivery_id} "
+              f"(ball back after {frames_since_ball}f absent)")
 
     # =====================================================
     # TRACKER UPDATE
@@ -759,7 +787,9 @@ while True:
                 clf_conf = 0.0
 
                 if shot_classifier is not None and len(contact_frames) >= 10:
+                    _t0 = time.perf_counter()
                     clf_name, clf_conf = shot_classifier.classify(contact_frames)
+                    perf["clf"].append(time.perf_counter() - _t0)
 
                 if has_trajectory and geo_name is not None:
                     # Geometry available: use it as primary, EfficientNet secondary
@@ -938,6 +968,8 @@ while True:
 
     out.write(frame)
 
+    perf["frame"].append(time.perf_counter() - _frame_t0)
+
     if not HEADLESS and (cv2.waitKey(1) & 0xFF == ord('q')):
         break
 
@@ -954,6 +986,41 @@ cap.release()
 out.release()
 
 cv2.destroyAllWindows()
+
+# =========================================================
+# RUNTIME / THROUGHPUT SUMMARY (per-stage profiling)
+# =========================================================
+
+if PROFILE:
+    import numpy as _np
+
+    def _stat(vals):
+        a = _np.array(vals) * 1000.0            # → milliseconds
+        if a.size == 0:
+            return None
+        return dict(n=int(a.size), mean=float(a.mean()), median=float(_np.median(a)),
+                    p95=float(_np.percentile(a, 95)), fps=float(1000.0 / a.mean()))
+
+    stages = {k: _stat(v) for k, v in perf.items()}
+    print("\n" + "=" * 74)
+    print("RUNTIME / THROUGHPUT  (per-stage, ms; GPU inference)")
+    print("=" * 74)
+    print(f"{'stage':<16}{'calls':>7}{'mean ms':>10}{'median':>9}{'p95':>8}{'~FPS':>9}")
+    for name in ["ball", "bat", "pose", "clf", "frame"]:
+        s = stages[name]
+        if s is None:
+            continue
+        print(f"{name:<16}{s['n']:>7}{s['mean']:>10.2f}{s['median']:>9.2f}"
+              f"{s['p95']:>8.2f}{s['fps']:>9.1f}")
+    ff = stages["frame"]
+    if ff:
+        print("-" * 74)
+        print(f"End-to-end: {ff['mean']:.2f} ms/frame  →  {ff['fps']:.1f} FPS "
+              f"(real-time @30 FPS: {'YES' if ff['fps'] >= 30 else 'NO'})")
+    perf_path = os.environ.get("PERF_JSON", "runtime_profile.json")
+    with open(perf_path, "w") as _pf:
+        json.dump(stages, _pf, indent=2)
+    print(f"✅ Saved runtime profile → {perf_path}")
 
 with open(EVENTS_JSON, "w") as f:
 
