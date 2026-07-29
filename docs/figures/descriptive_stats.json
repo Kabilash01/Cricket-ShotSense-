@@ -1,0 +1,32 @@
+{
+  "n": 16,
+  "distance": {
+    "mean": 7.851875,
+    "median": 7.13,
+    "sd": 4.231699766839168,
+    "min": 2.5,
+    "max": 19.73,
+    "ground": 14,
+    "aerial": 2
+  },
+  "repertoire": {
+    "counts": {
+      "Pull Shot": 3,
+      "Edge": 3,
+      "Flick": 4,
+      "Leg Glance": 2,
+      "Lofted Drive": 1,
+      "Late Cut": 1,
+      "On Drive": 1,
+      "Square Cut": 1
+    },
+    "entropy_bits": 2.7806390622295662,
+    "max_bits": 3.0,
+    "evenness": 0.9268796874098554
+  },
+  "confidence": {
+    "mean": 84.89874999999999,
+    "median": 96.175,
+    "ge97": 7
+  }
+}

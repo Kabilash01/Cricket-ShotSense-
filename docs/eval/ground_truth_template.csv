@@ -1,0 +1,11 @@
+clip,timestamp_sec,shot_name
+# One row per REAL bat-contact you see when watching each clip.
+# clip: clip1|clip2|clip3   timestamp_sec: when contact happens (seconds into the clip)
+# shot_name: optional (Flick, Pull Shot, Cover Drive, ...). Leave blank to score presence only.
+# Cross-check against docs/eval/detections_reference.csv, but label INDEPENDENTLY.
+clip1,,
+clip1,,
+clip2,,
+clip2,,
+clip3,,
+clip3,,

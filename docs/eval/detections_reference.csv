@@ -1,0 +1,17 @@
+clip,timestamp_sec,frame,detected_shot,confidence
+clip1,17.05,511,Pull Shot,79.38
+clip1,48.62,1457,Edge,68.27
+clip2,4.54,136,Flick,100.0
+clip2,9.81,294,Edge,98.49
+clip2,17.98,539,Leg Glance,99.55
+clip2,31.33,939,Pull Shot,85.55
+clip2,34.87,1045,Lofted Drive,100.0
+clip2,161.03,4826,Late Cut,97.18
+clip2,215.38,6455,Edge,99.84
+clip3,30.63,918,Leg Glance,96.55
+clip3,167.83,5030,Pull Shot,70.96
+clip3,196.46,5888,Flick,49.05
+clip3,199.5,5979,Flick,98.29
+clip3,259.36,7773,On Drive,95.8
+clip3,300.87,9017,Flick,63.62
+clip3,303.9,9108,Square Cut,55.85
